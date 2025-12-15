@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Notion Clock</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #ffffff !important;
+    font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  /* FIXED size = no Notion stretch */
+  .clock-wrapper {
+    width: 320px;
+   height: 220px;
+    display: flex;
+    gap: 2px;
+  }
+
+  .panel {
+    flex: 1;
+    background: #efebe7;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* horizontal divider */
+  .panel::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: rgba(0,0,0,0.15);
+    transform: translateY(-50%);
+  }
+
+  .number {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -54%); /* less vertical pull */
+  font-size: 84px;                  /* ⬅️ smaller so it fits */
+  font-weight: 800;
+  line-height: 1;
+  color: #000;
+  letter-spacing: -4px;
+}
+
+  .label-left {
+    position: absolute;
+    bottom: 12px;
+    left: 14px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #000;
+  }
+
+  .label-right {
+    position: absolute;
+    bottom: 12px;
+    right: 14px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #000;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="clock-wrapper">
+  <div class="panel">
+    <div class="number" id="hours">12</div>
+    <div class="label-left" id="ampm">PM</div>
+  </div>
+
+  <div class="panel">
+    <div class="number" id="minutes">00</div>
+    <div class="label-right" id="weekday">MONDAY</div>
+  </div>
+</div>
+
+<script>
+  function updateClock() {
+    const now = new Date();
+
+    let hours = now.getHours();
+    const minutes = now.getMinutes();
+    const ampm = hours >= 12 ? "PM" : "AM";
+
+    hours = hours % 12;
+    hours = hours === 0 ? 12 : hours;
+
+    const days = ["SUNDAY","MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY"];
+
+    document.getElementById("hours").textContent = String(hours).padStart(2, "0");
+    document.getElementById("minutes").textContent = String(minutes).padStart(2, "0");
+    document.getElementById("ampm").textContent = ampm;
+    document.getElementById("weekday").textContent = days[now.getDay()];
+  }
+
+  updateClock();
+  setInterval(updateClock, 1000);
+</script>
+
+</body>
+</html>
